@@ -3,7 +3,7 @@ require 'helper'
 describe Faraday::Response do
   describe "MysqlError" do
     before do
-      stub_get('/api/1/BTCUSD/trades/fetch').
+      stub_get('/api/1/BTCEUR/trades/fetch').
         to_return(status: 200, body: fixture('mysql_error'))
     end
 
@@ -16,7 +16,7 @@ describe Faraday::Response do
 
   describe "Error" do
     before do
-      stub_get('/api/1/BTCUSD/trades/fetch').
+      stub_get('/api/1/BTCEUR/trades/fetch').
         to_return(status: 200, body: fixture('unknown_error.json'))
     end
 
@@ -28,7 +28,7 @@ describe Faraday::Response do
 
     describe "UnauthorizedError" do
       before do
-        stub_get('/api/1/BTCUSD/trades/fetch').
+        stub_get('/api/1/BTCEUR/trades/fetch').
           to_return(status: 403, body: fixture('error.json'))
       end
 

@@ -52,7 +52,7 @@ module MtGox
     # @example
     #   MtGox.ticker
     def ticker
-      ticker = get('/api/1/BTCUSD/ticker')
+      ticker = get('/api/1/BTCEUR/ticker')
       Ticker.instance.buy    = value_currency ticker['buy']
       Ticker.instance.high   = value_currency ticker['high']
       Ticker.instance.price  = value_currency ticker['last_all']
@@ -84,7 +84,7 @@ module MtGox
     # @example
     #   MtGox.offers
     def offers
-      offers = get('/api/1/BTCUSD/depth/fetch')
+      offers = get('/api/1/BTCEUR/depth/fetch')
       asks = offers['asks'].sort_by do |ask|
         ask['price_int'].to_i
       end.map! do |ask|
@@ -146,7 +146,7 @@ module MtGox
     #   MtGox.trades
     #   MtGox.trades :since => 12341234
     def trades(opts={})
-      get('/api/1/BTCUSD/trades/fetch', opts).
+      get('/api/1/BTCEUR/trades/fetch', opts).
         sort_by{|trade| trade['date']}.map do |trade|
         Trade.new(trade)
       end
@@ -233,7 +233,7 @@ module MtGox
       if price != :market
           order[:price_int] = intify(price, :usd)
       end
-      post('/api/1/BTCUSD/order/add', order)
+      post('/api/1/BTCEUR/order/add', order)
     end
     alias add_order! order!
     alias addorder! order!
@@ -263,7 +263,7 @@ module MtGox
       orders = post('/api/1/generic/orders')
       order = orders.find{|order| order['oid'] == args.to_s}
       if order
-        res = post('/api/1/BTCUSD/order/cancel', oid: order['oid'])
+        res = post('/api/1/BTCEUR/order/cancel', oid: order['oid'])
         orders.delete_if{|o| o['oid'] == res['oid']}
         parse_orders(orders)
       else
